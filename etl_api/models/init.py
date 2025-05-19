@@ -1,0 +1,1 @@
+from .inscription import Inscription
