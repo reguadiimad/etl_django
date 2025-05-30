@@ -1,7 +1,9 @@
 from django.urls import path
 from .views.admin_view import AdminListCreateView, AdminDeleteView, AdminLoginView, ForgotPasswordView, AdminUpdateView,change_password
 from rest_framework_simplejwt import views as jwt_views
-from .views.inscrption_view import InscriptionListView, InscriptionDetailView, InscriptionCreateView
+from .views.inscrption_view import InscriptionListView, InscriptionDetailView, InscriptionCreateView, InscriptionUpdateView
+from .views.news_view import NewsCreateView, NewsTranslatedListView, NewsUpdateView, NewsDeleteView
+from .views.condidats_view import condidats_view
 
 urlpatterns = [
     path('admins/', AdminListCreateView.as_view(), name='admin-list-create'),
@@ -14,6 +16,18 @@ urlpatterns = [
     path('inscriptions/', InscriptionListView.as_view(), name='inscription-list'),
     path('inscriptions/<int:pk>/', InscriptionDetailView.as_view(), name='inscription-detail'),
     path('inscriptions/create/', InscriptionCreateView.as_view(), name='inscription-create'),
+    path('inscriptions/<int:id>/update/', InscriptionUpdateView.as_view(), name='inscription-update'),
+
+    path('news/create/', NewsCreateView.as_view(), name='news-create'),
+    path('news-translated/', NewsTranslatedListView.as_view(), name='news-translated'),
+    path('news/<int:pk>/update/', NewsUpdateView.as_view(), name='news-update'),
+    path('news/<int:pk>/delete/', NewsDeleteView.as_view(), name='news-delete'),
+
+
+
+    path('condidats/', condidats_view, name='condidats'),
+
+
 
 
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),

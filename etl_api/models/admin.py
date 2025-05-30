@@ -1,6 +1,8 @@
 from django.contrib.auth.hashers import make_password
 from django.db import models
 from .inscription import Inscription
+from .news import News
+from .condidats import Condidats
 
 
 class Admin(models.Model):

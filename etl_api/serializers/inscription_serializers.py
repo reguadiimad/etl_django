@@ -7,12 +7,7 @@ from ..models.inscription import Inscription
 class InscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inscription
-        fields = [
-            'id', 'date', 'school_year',
-            'responsable_nom', 'responsable_prenom', 'responsable_lien', 'responsable_email', 'responsable_telephone',
-            'eleve_nom', 'eleve_prenom', 'eleve_date_naissance', 'niveau_scolaire', 'classe', 'institut', 'province',
-        ]
-
+        fields = '__all__'
     def validate(self, attrs):
         # Prevent duplicate registrations by student name + school year
         nom = attrs.get('eleve_nom')
@@ -24,7 +19,8 @@ class InscriptionSerializer(serializers.ModelSerializer):
             school_year=school_year
         ).exists():
             raise serializers.ValidationError(
-                f"Cet élève est déjà inscrit pour l'année scolaire {school_year}. Si besoin d'info, contactez-nous."
+               f"L'élève que vous avez saisi est déjà inscrit pour l'année scolaire {school_year}. "
+                "Vous pouvez modifier son inscription, enregistrer un autre enfant, ou fermer."
             )
         return attrs
 
@@ -34,6 +30,8 @@ class InscriptionSerializer(serializers.ModelSerializer):
         # Date & School Year
         flat['date'] = data.get('date')
         flat['school_year'] = data.get('school_year')
+        flat['confirmed']       = data.get('confirmed')
+        flat['confirmed_by']    = data.get('confirmed_by')
 
         # Responsable
         responsable = data.get('responsable', {})
@@ -64,6 +62,7 @@ class InscriptionSerializer(serializers.ModelSerializer):
         flat['classe']          = eleve.get('classe')
         flat['institut']        = eleve.get('institut')
         flat['province']        = eleve.get('province')
+       
 
         return super().to_internal_value(flat)
 
@@ -101,6 +100,8 @@ class InscriptionSerializer(serializers.ModelSerializer):
             "id": instance.id,
             "date": instance.date,
             "school_year": instance.school_year,
+            "confirmed": instance.confirmed,
+            "confirmed_by": instance.confirmed_by,
             "responsable": {
                 "nom": instance.responsable_nom,
                 "prenom": instance.responsable_prenom,
@@ -119,7 +120,8 @@ class InscriptionSerializer(serializers.ModelSerializer):
                 "niveauScolaire": instance.niveau_scolaire,
                 "classe": instance.classe,
                 "institut": instance.institut,
-                "province": instance.province
+                "province": instance.province,
+                
             }
         }
  

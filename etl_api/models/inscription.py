@@ -16,6 +16,10 @@ class Inscription(models.Model):
     eleve_nom = models.CharField(max_length=100)
     eleve_date_naissance = models.DateField()
     niveau_scolaire = models.CharField(max_length=50)
-    classe = models.CharField(max_length=20)
-    institut = models.CharField(max_length=200)
+    classe = models.CharField(max_length=20, blank=True, null=True)
+    institut = models.CharField(max_length=200, blank=True, null=True)
     province = models.CharField(max_length=100)
+
+    # Confirmation
+    confirmed = models.BooleanField(default=False)
+    confirmed_by = models.CharField(max_length=100, blank=True, null=True)

@@ -75,20 +75,23 @@ class AdminLoginView(APIView):
 
 class ForgotPasswordView(APIView):
     def post(self, request):
-        email = request.data.get('email')
+        email = request.data.get('email', '').strip()
 
         try:
             admin = Admin.objects.get(email=email)
         except Admin.DoesNotExist:
             return Response({"detail": "Aucun compte trouvé avec cet email."}, status=status.HTTP_404_NOT_FOUND)
 
-        # Generate a temporary password
         temp_password = get_random_string(length=8, allowed_chars=string.ascii_letters + string.digits)
-        admin.password = make_password(temp_password)
+        
+        # Save password
+        admin.password = temp_password
         admin.must_change_password = True
         admin.save()
 
-        # Send email
+        # TEMPORARY: Debug print
+        print("TEMP PASSWORD:", temp_password)
+
         subject = "Réinitialisation de votre mot de passe"
         message = f"""
 Bonjour {admin.prenom},
