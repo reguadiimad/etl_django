@@ -17,7 +17,12 @@ class NewsTranslatedListView(APIView):
         news_items = News.objects.all()
         serializer = NewsTranslatedSerializer(news_items, many=True)
         return Response(serializer.data)
-
+    
+class LatestNewsTranslatedView(APIView):
+    def get(self, request):
+        latest_news = News.objects.order_by('-publish_date')[:10]  # Order by newest first
+        serializer = NewsTranslatedSerializer(latest_news, many=True)
+        return Response(serializer.data)
 
 class NewsUpdateView(generics.UpdateAPIView):
     """

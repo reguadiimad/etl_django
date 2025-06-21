@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
-from ..models.admin import Admin
-from ..serializers.admin_serializers import AdminSerializer
+from ..models.admin import Admin,NewsLetterEmails
+from ..serializers.admin_serializers import AdminSerializer, NewsLetterEmailsSerializer
 
 import string
 
@@ -142,8 +142,15 @@ def change_password(request, admin_id):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    admin.password = make_password(new_password)
+    admin.password = new_password
     admin.must_change_password = False
     admin.save(update_fields=['password', 'must_change_password'])
 
     return Response({"detail": "Mot de passe mis à jour avec succès."}, status=status.HTTP_200_OK)
+
+
+
+
+class NewsLetterEmailsListCreateAPIView(generics.ListCreateAPIView):
+    queryset = NewsLetterEmails.objects.all()
+    serializer_class = NewsLetterEmailsSerializer

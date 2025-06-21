@@ -62,6 +62,7 @@ class InscriptionSerializer(serializers.ModelSerializer):
         flat['classe']          = eleve.get('classe')
         flat['institut']        = eleve.get('institut')
         flat['province']        = eleve.get('province')
+        flat['branch']          = eleve.get('branch')
        
 
         return super().to_internal_value(flat)
@@ -75,6 +76,9 @@ class InscriptionSerializer(serializers.ModelSerializer):
 
     def send_confirmation_email(self, inscription):
         to_email = inscription.responsable_email
+        if not to_email:
+            return  # Don't send if no email
+
         subject = "Confirmation de préinscription – Écoles La Tour Eiffel"
         message = (
             f"Bonjour {inscription.responsable_prenom} {inscription.responsable_nom},\n\n"
@@ -121,6 +125,7 @@ class InscriptionSerializer(serializers.ModelSerializer):
                 "classe": instance.classe,
                 "institut": instance.institut,
                 "province": instance.province,
+                "branch": instance.branch
                 
             }
         }

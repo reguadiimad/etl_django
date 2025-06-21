@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-)hp+gb-_2y4i1-(c8%e4y*h3rr4olc4(h5d=dbhf=&4q$^$6q6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["macbook-pro-2.local","127.0.0.1","localhost","*"]
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -76,6 +76,7 @@ MIDDLEWARE = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True

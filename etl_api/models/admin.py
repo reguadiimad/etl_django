@@ -3,6 +3,7 @@ from django.db import models
 from .inscription import Inscription
 from .news import News
 from .condidats import Condidats
+from .contact import ContactForm
 
 
 class Admin(models.Model):
@@ -39,5 +40,18 @@ class Admin(models.Model):
 
     def __str__(self):
         return f"{self.civilite} {self.prenom} {self.nom}"
+    
+
+
+
+
+
+
+class NewsLetterEmails(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email
+
 
 
